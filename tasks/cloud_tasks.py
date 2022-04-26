@@ -10,7 +10,7 @@ from google import auth
 _, PROJECT_ID = auth.default()
 TASKS_CLIENT = tasks_v2.CloudTasksClient()
 
-CLOUD_TASKS_PATH = (PROJECT_ID, "us-central1", "callio")
+CLOUD_TASKS_PATH = (PROJECT_ID, "us-central1", "callrail")
 PARENT = TASKS_CLIENT.queue_path(*CLOUD_TASKS_PATH)
 
 
@@ -41,7 +41,7 @@ def create_tasks(
     return len(
         [
             TASKS_CLIENT.create_task(
-                request={
+                request={ # type: ignore
                     "parent": PARENT,
                     "task": task,
                 }

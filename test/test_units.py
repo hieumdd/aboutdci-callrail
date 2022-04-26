@@ -5,8 +5,8 @@ from callrail import callrail_service
 from tasks import tasks_service
 
 TIME_FRAME = [
-    # ("auto", (None, None)),
-    ("manual", ("2022-01-01", "2022-05-01")),
+    ("auto", (None, None)),
+    # ("manual", ("2021-01-01", "2022-05-01")),
 ]
 
 
