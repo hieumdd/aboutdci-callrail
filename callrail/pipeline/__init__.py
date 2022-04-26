@@ -1,4 +1,4 @@
-from callrail.pipeline import calls
+from callrail.pipeline import calls, form_submissions
 
 pipelines = {
     i.name: i
@@ -6,6 +6,7 @@ pipelines = {
         j.pipeline
         for j in [
             calls,
+            # form_submissions,
         ]
     ]
 }
