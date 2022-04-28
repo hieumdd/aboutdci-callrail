@@ -1,4 +1,5 @@
 from callrail.pipeline.interface import Pipeline
+from db.bigquery import get_latest_timestamp
 
 pipeline = Pipeline(
     "FormSubmissions",
@@ -49,4 +50,6 @@ pipeline = Pipeline(
         {"name": "submitted_at", "type": "TIMESTAMP"},
         {"name": "first_form", "type": "BOOLEAN"},
     ],
+    params_fn=get_latest_timestamp,
+    cursor_key="submitted_at",
 )
