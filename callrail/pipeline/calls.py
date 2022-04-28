@@ -1,4 +1,5 @@
 from callrail.pipeline.interface import Pipeline
+from db.bigquery import get_latest_timestamp
 
 pipeline = Pipeline(
     "Calls",
@@ -45,4 +46,6 @@ pipeline = Pipeline(
         {"name": "voicemail", "type": "BOOLEAN"},
         {"name": "agent_email", "type": "STRING"},
     ],
+    params_fn=get_latest_timestamp,
+    cursor_key="start_time",
 )

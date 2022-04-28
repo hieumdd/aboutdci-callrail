@@ -1,5 +1,5 @@
-from typing import Callable, Any
-from datetime import datetime
+from typing import Callable, Any, Optional
+from datetime import datetime, timedelta
 
 from google.cloud import bigquery
 
@@ -8,11 +8,27 @@ BQ_CLIENT = bigquery.Client()
 DATASET = "CallRail"
 
 
-def get_last_timestamp(table: str, cursor_key: str) -> datetime:
-    rows = BQ_CLIENT.query(
-        f"SELECT MAX({cursor_key}) AS incre FROM {DATASET}.{table}"
-    ).result()
-    return [row for row in rows][0]["incre"]
+def get_latest_timestamp(table: str, cursor_key: str):
+    def _svc(timeframe: tuple[Optional[str], Optional[str]]) -> dict[str, str]:
+        start, end = timeframe
+        if start and end:
+            _start, _end = start, end
+        else:
+            rows = BQ_CLIENT.query(
+                f"SELECT MAX({cursor_key}) AS incre FROM {DATASET}.{table}"
+            ).result()
+            _start = (
+                ([row for row in rows][0]["incre"] - timedelta(days=1))
+                .date()
+                .isoformat()
+            )
+            _end = datetime.utcnow().date().isoformat()
+        return {
+            "start_date": _start,
+            "end_date": _end,
+        }
+
+    return _svc
 
 
 def load(
